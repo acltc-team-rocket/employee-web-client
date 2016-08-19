@@ -5,3 +5,6 @@
   <li>Social Security Number: <%= @employee["ssn"] %></li>
   <li>Birthdate: <%= @employee["birthdate"] %></li>
 </ul>
+
+<%= link_to "Edit", "/employees/#{@employee['id']}/edit" %>
+<%= link_to "Delete (a.k.a. fire)", "/employees/#{@employee['id']}", method: :delete  %>
