@@ -5,7 +5,8 @@ class EmployeesController < ApplicationController
   end
 
   def show
-    @employee = Unirest.get("#{ENV['DOMAIN']}/employees/#{params[:id]}.json").body
+    employee_hash = Unirest.get("#{ENV['DOMAIN']}/employees/#{params[:id]}.json").body
+    @employee = Employee.new(employee_hash)
   end
 
   def new
