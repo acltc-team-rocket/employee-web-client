@@ -1,24 +1,19 @@
 class EmployeesController < ApplicationController
   
   def index
-    employee_hashes = Unirest.get("#{ENV['DOMAIN']}/employees.json").body
-    @employees = []
-    employee_hashes.each do |employee_hash|
-      @employees << Employee.new(employee_hash)
-    end
+    @employees = Employee.all
   end
 
   def show
     @employee = Employee.find(params[:id])
-    @employee.destroy
   end
 
   def new
   end
 
   def create
-    @employee = Unirest.post("#{ENV['DOMAIN']}/employees.json", parameters: {first_name: params[:first_name], last_name: params[:last_name], email: params[:email], birthdate: params[:birthdate], ssn: params[:ssn]}).body
-    redirect_to "/employees/#{@employee['id']}"
+    @employee = Employee.create({first_name: params[:first_name], last_name: params[:last_name], email: params[:email], birthdate: params[:birthdate], ssn: params[:ssn]})
+    redirect_to "/employees/#{@employee.id}"
   end
 
   def edit
@@ -31,7 +26,8 @@ class EmployeesController < ApplicationController
   end
 
   def destroy
-    Unirest.delete("#{ENV['DOMAIN']}/employees/#{params[:id]}.json").body
+    @employee = Employee.find(params[:id])
+    @employee.destroy
     redirect_to "/employees"
   end
 
